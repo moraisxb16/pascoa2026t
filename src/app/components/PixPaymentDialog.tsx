@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
-import { QRCodeSVG } from 'qrcode.react';
 import { Copy, Check, CreditCard, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -67,17 +66,7 @@ export function PixPaymentDialog({
             </div>
             
             <div className="flex flex-col items-center space-y-4">
-              <div className="bg-white p-6 rounded-2xl border-4 border-purple-200 shadow-lg">
-                <QRCodeSVG 
-                  value={pixKey}
-                  size={200}
-                  level="H"
-                  includeMargin={true}
-                />
-              </div>
-              
               <div className="text-center">
-                <p className="text-sm text-gray-600 mb-2">Escaneie o QR Code acima ou</p>
                 <p className="font-semibold text-gray-800">Use a chave PIX abaixo:</p>
               </div>
 
@@ -129,7 +118,7 @@ export function PixPaymentDialog({
               </li>
               <li className="flex gap-3">
                 <span className="flex-shrink-0 w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-xs">3</span>
-                <span>Escaneie o <strong>QR Code</strong> ou copie a <strong>chave PIX</strong></span>
+                <span>Copie a <strong>chave PIX</strong></span>
               </li>
               <li className="flex gap-3">
                 <span className="flex-shrink-0 w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-xs">4</span>
