@@ -254,7 +254,7 @@ Por favor, me envie a chave PIX para que eu possa realizar o pagamento.`;
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-700">
                   <Check className="w-4 h-4 text-green-600" />
-                  <span>Reserva confirmada pelo ADM via WhatsApp</span>
+                  <span>Reserva confirmada via email</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-700">
                   <Check className="w-4 h-4 text-green-600" />
