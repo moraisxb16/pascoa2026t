@@ -57,31 +57,34 @@ export default function App() {
     return () => window.clearInterval(refreshTimer);
   }, [totalNumbers]);
 
-  const handleSendToWhatsApp = () => {
+  const handleSendReserveEmail = () => {
     if (selectedNumbers.length === 0) {
       toast.error('Selecione pelo menos um número para continuar.');
       return;
     }
 
     if (!customerName.trim()) {
-      toast.error('Informe seu nome para enviar o comprovante.');
+      toast.error('Informe seu nome para enviar o pedido.');
       return;
     }
 
     if (!customerPhone.trim()) {
-      toast.error('Informe seu telefone para enviar o comprovante.');
+      toast.error('Informe seu telefone para enviar o pedido.');
       return;
     }
 
     const numerosSelecionados = [...selectedNumbers].sort((a, b) => a - b).join(', ');
-    const mensagem = `Olá! Acabei de pagar a rifa de Páscoa.
+    const assunto = 'Pedido de reserva - Rifa de Páscoa';
+    const corpoEmail = `Olá! Gostaria de reservar os seguintes números da rifa de Páscoa.
 
 Nome: ${customerName.trim()}
 Telefone: ${customerPhone.trim()}
-Números escolhidos: ${numerosSelecionados}`;
+Números escolhidos: ${numerosSelecionados}
 
-    const whatsappUrl = `https://wa.me/5519989693601?text=${encodeURIComponent(mensagem)}`;
-    window.location.href = whatsappUrl;
+Por favor, me envie a chave PIX para que eu possa realizar o pagamento.`;
+    
+    const mailtoUrl = `mailto:rifastusa@gmail.com?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
+    window.location.href = mailtoUrl;
   };
 
   return (
@@ -346,13 +349,13 @@ Números escolhidos: ${numerosSelecionados}`;
 
             <div className="mt-4 flex flex-col items-center gap-2">
               <Button
-                onClick={handleSendToWhatsApp}
+                onClick={handleSendReserveEmail}
                 className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-6"
               >
                 Concluir reserva de número
               </Button>
               <p className="text-xs text-center text-gray-600">
-                Os números só serão marcados como reservados após validação manual do comprovante pelo ADM.
+                O envio abre seu e-mail com os dados preenchidos para solicitar a chave PIX e concluir a reserva.
               </p>
             </div>
           </Card>

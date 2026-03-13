@@ -1,6 +1,6 @@
 import { jsonResponse, readReservados, writeReservados } from "./_reservados.js";
 
-const ADMIN_PASSWORD = "rifa2025";
+const ADMIN_PASSWORD = "anak2020xang";
 
 export default async function handler(request) {
   if (request.method !== "POST") {
