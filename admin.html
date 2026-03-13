@@ -16,20 +16,26 @@
       button { cursor: pointer; border: none; color: #fff; background: #f97316; font-weight: 700; }
       button:disabled { opacity: 0.65; cursor: not-allowed; }
       .muted-btn { background: #6b7280; }
-      .grid { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+      .grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
       .number { border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px 0; background: #fff; font-weight: 700; cursor: pointer; }
       .number.reserved { background: #d1d5db; color: #4b5563; cursor: not-allowed; }
       .number.selected { background: #fb923c; color: #fff; border-color: #f97316; }
       .status { margin-top: 10px; min-height: 20px; font-size: 14px; }
       .ok { color: #047857; }
       .err { color: #b91c1c; }
+      @media (min-width: 640px) {
+        .grid { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+      }
+      @media (min-width: 768px) {
+        .grid { grid-template-columns: repeat(10, minmax(0, 1fr)); }
+      }
     </style>
   </head>
   <body>
     <div class="container">
       <div class="card">
         <h1>Painel Admin da Rifa</h1>
-        <p>Digite a senha, selecione um numero e clique em "Marcar como reservado".</p>
+        <p>Digite a senha, clique no numero desejado e confirme em "Reserva feita".</p>
 
         <div class="row">
           <input id="password" type="password" placeholder="Senha do admin" />
@@ -37,7 +43,7 @@
         </div>
 
         <div class="row" style="margin-top: 8px">
-          <button id="reserveBtn" type="button">Marcar como reservado</button>
+          <button id="reserveBtn" type="button">Reserva feita</button>
         </div>
 
         <div class="status" id="status"></div>
@@ -148,7 +154,7 @@
           selectedNumber = null;
           selectionEl.textContent = "Nenhum numero selecionado.";
           renderGrid();
-          setStatus(`Numero ${done} marcado como reservado.`, false);
+          setStatus(`Reserva feita para o numero ${done}. Ele ja esta indisponivel no site.`, false);
         } catch (error) {
           setStatus(error instanceof Error ? error.message : "Falha ao salvar.", true);
         } finally {

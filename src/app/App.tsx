@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { RaffleGrid } from './components/RaffleGrid';
+import { PixPaymentDialog } from './components/PixPaymentDialog';
 import { Card } from './components/ui/card';
 import { Button } from './components/ui/button';
 import { Badge } from './components/ui/badge';
@@ -16,6 +17,7 @@ export default function App() {
   const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
+  const [donationDialogOpen, setDonationDialogOpen] = useState(false);
 
   const totalNumbers = 200;
   const pricePerNumber = 15;
@@ -41,6 +43,9 @@ export default function App() {
             .map((value: unknown) => Number(value))
             .filter((value: number) => Number.isInteger(value) && value >= 1 && value <= totalNumbers);
           setSoldNumbers(validNumbers);
+          setSelectedNumbers((currentSelected) =>
+            currentSelected.filter((number) => !validNumbers.includes(number))
+          );
         }
       } catch {
         // Em ambiente sem Functions ativas, segue com todos números disponíveis.
@@ -48,6 +53,8 @@ export default function App() {
     };
 
     loadReservedNumbers();
+    const refreshTimer = window.setInterval(loadReservedNumbers, 15000);
+    return () => window.clearInterval(refreshTimer);
   }, [totalNumbers]);
 
   const handleSendToWhatsApp = () => {
@@ -76,7 +83,7 @@ Números escolhidos: ${numerosSelecionados}
 Estou enviando o comprovante do PIX.`;
 
     const whatsappUrl = `https://wa.me/5519989693601?text=${encodeURIComponent(mensagem)}`;
-    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+    window.location.href = whatsappUrl;
   };
 
   return (
@@ -344,7 +351,7 @@ Estou enviando o comprovante do PIX.`;
                 onClick={handleSendToWhatsApp}
                 className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-6"
               >
-                Enviar comprovante e concluir reserva
+                Concluir reserva de número
               </Button>
               <p className="text-xs text-center text-gray-600">
                 Os números só serão marcados como reservados após validação manual do comprovante pelo ADM.
@@ -412,10 +419,7 @@ Estou enviando o comprovante do PIX.`;
 
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button
-                  onClick={() => {
-                    const element = document.getElementById('numeros-grade');
-                    element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  }}
+                  onClick={() => setDonationDialogOpen(true)}
                   className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white px-8 py-6 text-base font-bold shadow-lg w-full"
                 >
                   <Heart className="w-5 h-5 mr-2" />
@@ -456,6 +460,15 @@ Estou enviando o comprovante do PIX.`;
           </p>
         </div>
       </div>
+
+      <PixPaymentDialog
+        open={donationDialogOpen}
+        onOpenChange={setDonationDialogOpen}
+        selectedNumbers={[]}
+        customerName=""
+        customerPhone=""
+        onPaymentConfirmed={() => {}}
+      />
 
     </div>
   );

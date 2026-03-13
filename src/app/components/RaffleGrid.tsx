@@ -22,7 +22,7 @@ export function RaffleGrid({
   };
 
   return (
-    <div className="grid grid-cols-10 gap-2 md:gap-3">
+    <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2 md:gap-3">
       {numbers.map((num) => {
         const status = getNumberStatus(num);
         const isSold = status === 'sold';
@@ -34,7 +34,7 @@ export function RaffleGrid({
             onClick={() => !isSold && onNumberClick(num)}
             disabled={isSold}
             className={cn(
-              "aspect-square rounded-lg font-semibold text-sm md:text-base transition-all duration-200",
+              "aspect-square rounded-lg font-semibold text-sm md:text-base transition-all duration-200 min-h-11",
               "flex items-center justify-center relative overflow-hidden",
               isSold && "bg-gray-300 text-gray-500 cursor-not-allowed opacity-50",
               !isSold && !isSelected && "bg-white border-2 border-pink-200 text-pink-600 hover:border-pink-400 hover:bg-pink-50 hover:scale-105 shadow-sm",
