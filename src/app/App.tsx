@@ -78,9 +78,7 @@ export default function App() {
 
 Nome: ${customerName.trim()}
 Telefone: ${customerPhone.trim()}
-Números escolhidos: ${numerosSelecionados}
-
-Estou enviando o comprovante do PIX.`;
+Números escolhidos: ${numerosSelecionados}`;
 
     const whatsappUrl = `https://wa.me/5519989693601?text=${encodeURIComponent(mensagem)}`;
     window.location.href = whatsappUrl;
