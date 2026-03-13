@@ -7,7 +7,7 @@ import { Badge } from './components/ui/badge';
 import { Progress } from './components/ui/progress';
 import { Input } from './components/ui/input';
 import { Label } from './components/ui/label';
-import { Heart, Gift, Shield, Trophy, Phone, Instagram, Check, Star } from 'lucide-react';
+import { Heart, Gift, Shield, Trophy, Instagram, Check, Star } from 'lucide-react';
 import { ImageWithFallback } from './components/figma/ImageWithFallback';
 import { toast } from 'sonner';
 import { Toaster } from './components/ui/sonner';
@@ -439,12 +439,14 @@ Por favor, me envie a chave PIX para que eu possa realizar o pagamento.`;
         {/* Contato */}
         <Card className="mt-8 p-8 border border-gray-200 bg-white">
           <h3 className="text-xl font-bold text-gray-900 text-center mb-6">Precisa de Ajuda?</h3>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button className="bg-green-600 hover:bg-green-700 text-white px-8 py-6">
-              <Phone className="w-5 h-5 mr-2" />
-              WhatsApp
-            </Button>
-            <Button variant="outline" className="border-gray-300 px-8 py-6">
+          <div className="flex items-center justify-center">
+            <Button
+              variant="outline"
+              className="border-gray-300 px-8 py-6"
+              onClick={() => {
+                window.location.href = 'https://ig.me/m/terreirosoldadosdearuanda';
+              }}
+            >
               <Instagram className="w-5 h-5 mr-2" />
               @soldadosdearuanda
             </Button>

@@ -59,32 +59,6 @@ export function PixPaymentDialog({
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Resumo da Compra */}
-          <Card className="p-6 bg-gradient-to-br from-purple-50 to-pink-50 border-2 border-purple-200">
-            <h3 className="font-bold text-lg text-gray-800 mb-3">📋 Resumo da Compra</h3>
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Números selecionados:</span>
-                <span className="font-bold text-purple-600">{selectedNumbers.length}</span>
-              </div>
-              <div className="flex flex-wrap gap-2 py-2">
-                {selectedNumbers.map(num => (
-                  <span key={num} className="bg-white px-3 py-1 rounded-lg text-sm font-semibold text-purple-600 border border-purple-200">
-                    {num}
-                  </span>
-                ))}
-              </div>
-              <div className="border-t border-purple-200 pt-3 mt-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-lg font-semibold text-gray-800">Valor Total:</span>
-                  <span className="text-3xl font-extrabold text-purple-600">
-                    R$ {totalValue.toFixed(2)}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </Card>
-
           {/* QR Code PIX */}
           <Card className="p-6 bg-white border-2 border-purple-200">
             <div className="flex items-center justify-center gap-2 mb-4">
