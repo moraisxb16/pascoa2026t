@@ -160,7 +160,7 @@ Por favor, me envie a chave PIX para que eu possa realizar o pagamento.`;
             <Card className="overflow-hidden border border-gray-200 bg-white">
               <div className="relative">
                 <ImageWithFallback 
-                  src="https://images.unsplash.com/photo-1650886584481-27112500da1d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsYXJnZSUyMGVhc3RlciUyMGVnZyUyMGNob2NvbGF0ZSUyMHNpbmdsZXxlbnwxfHx8fDE3NzM0MDgxMzl8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                  src="https://i.ibb.co/cSM14Qt1/Whats-App-Image-2026-03-13-at-12-47-04.jpg"
                   alt="Ovo de Páscoa 3kg"
                   className="w-full h-96 object-cover"
                 />
@@ -367,7 +367,7 @@ Por favor, me envie a chave PIX para que eu possa realizar o pagamento.`;
             {/* Imagem Emocional */}
             <div className="relative h-64 md:h-auto">
               <ImageWithFallback 
-                src="https://images.unsplash.com/photo-1690100691688-f3b97fc15392?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoYXBweSUyMGNoaWxkcmVuJTIwc21pbGluZyUyMGpveXxlbnwxfHx8fDE3NzM0MDg0Mzl8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                src="https://i.ibb.co/V0y4N50M/foto3.jpg"
                 alt="Crianças felizes"
                 className="w-full h-full object-cover"
               />
