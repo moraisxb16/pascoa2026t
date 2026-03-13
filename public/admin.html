@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin da Rifa</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 0; background: #f4f6fb; color: #111827; }
+      .container { max-width: 1080px; margin: 28px auto; padding: 0 16px; }
+      .card { background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); }
+      h1 { margin: 0 0 10px; }
+      p { margin: 0; color: #4b5563; }
+      .row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+      input, button { border-radius: 8px; border: 1px solid #d1d5db; padding: 10px 12px; font-size: 14px; }
+      input { min-width: 250px; }
+      button { cursor: pointer; border: none; color: #fff; background: #f97316; font-weight: 700; }
+      button:disabled { opacity: 0.65; cursor: not-allowed; }
+      .muted-btn { background: #6b7280; }
+      .grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+      .number { border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px 0; background: #fff; font-weight: 700; cursor: pointer; }
+      .number.reserved { background: #d1d5db; color: #4b5563; cursor: not-allowed; }
+      .number.selected { background: #fb923c; color: #fff; border-color: #f97316; }
+      .status { margin-top: 10px; min-height: 20px; font-size: 14px; }
+      .ok { color: #047857; }
+      .err { color: #b91c1c; }
+      @media (min-width: 640px) {
+        .grid { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+      }
+      @media (min-width: 768px) {
+        .grid { grid-template-columns: repeat(10, minmax(0, 1fr)); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <h1>Painel Admin da Rifa</h1>
+        <p>Digite a senha, clique no numero desejado e confirme em "Reserva feita".</p>
+
+        <div class="row">
+          <input id="password" type="password" placeholder="Senha do admin" />
+          <button id="refreshBtn" class="muted-btn" type="button">Atualizar lista</button>
+        </div>
+
+        <div class="row" style="margin-top: 8px">
+          <button id="reserveBtn" type="button">Reserva feita</button>
+        </div>
+
+        <div class="status" id="status"></div>
+        <div class="status" id="selection">Nenhum numero selecionado.</div>
+
+        <div class="grid" id="numbersGrid"></div>
+      </div>
+    </div>
+
+    <script>
+      const total = 200;
+      let reservados = [];
+      let selectedNumber = null;
+
+      const grid = document.getElementById("numbersGrid");
+      const statusEl = document.getElementById("status");
+      const selectionEl = document.getElementById("selection");
+      const reserveBtn = document.getElementById("reserveBtn");
+      const refreshBtn = document.getElementById("refreshBtn");
+      const passwordEl = document.getElementById("password");
+
+      function setStatus(message, isError) {
+        statusEl.textContent = message;
+        statusEl.className = "status " + (isError ? "err" : "ok");
+      }
+
+      function renderGrid() {
+        grid.innerHTML = "";
+
+        for (let number = 1; number <= total; number += 1) {
+          const isReserved = reservados.includes(number);
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.textContent = String(number);
+          btn.className = "number";
+
+          if (isReserved) {
+            btn.classList.add("reserved");
+            btn.disabled = true;
+          } else {
+            if (selectedNumber === number) btn.classList.add("selected");
+            btn.addEventListener("click", () => {
+              selectedNumber = number;
+              selectionEl.textContent = `Numero selecionado: ${number}`;
+              renderGrid();
+            });
+          }
+
+          grid.appendChild(btn);
+        }
+      }
+
+      async function loadReservados() {
+        setStatus("Carregando numeros reservados...", false);
+        try {
+          const response = await fetch("/.netlify/functions/get-reservados", { cache: "no-store" });
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data?.error || "Erro ao carregar.");
+          }
+
+          reservados = Array.isArray(data?.reservados) ? data.reservados : [];
+          if (selectedNumber && reservados.includes(selectedNumber)) {
+            selectedNumber = null;
+            selectionEl.textContent = "Nenhum numero selecionado.";
+          }
+          renderGrid();
+          setStatus(`Lista atualizada. Reservados: ${reservados.length}`, false);
+        } catch (error) {
+          renderGrid();
+          setStatus(error instanceof Error ? error.message : "Falha ao carregar.", true);
+        }
+      }
+
+      async function reserveSelectedNumber() {
+        if (!selectedNumber) {
+          setStatus("Selecione um numero antes de reservar.", true);
+          return;
+        }
+
+        const password = passwordEl.value.trim();
+        if (!password) {
+          setStatus("Informe a senha do admin.", true);
+          return;
+        }
+
+        reserveBtn.disabled = true;
+        setStatus("Salvando reserva...", false);
+
+        try {
+          const response = await fetch("/.netlify/functions/reserve-number", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({
+              password,
+              number: selectedNumber,
+            }),
+          });
+
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data?.error || "Erro ao reservar numero.");
+          }
+
+          reservados = data.reservados;
+          const done = selectedNumber;
+          selectedNumber = null;
+          selectionEl.textContent = "Nenhum numero selecionado.";
+          renderGrid();
+          setStatus(`Reserva feita para o numero ${done}. Ele ja esta indisponivel no site.`, false);
+        } catch (error) {
+          setStatus(error instanceof Error ? error.message : "Falha ao salvar.", true);
+        } finally {
+          reserveBtn.disabled = false;
+        }
+      }
+
+      refreshBtn.addEventListener("click", loadReservados);
+      reserveBtn.addEventListener("click", reserveSelectedNumber);
+
+      renderGrid();
+      loadReservados();
+    </script>
+  </body>
+</html>
