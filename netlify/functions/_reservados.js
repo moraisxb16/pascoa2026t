@@ -1,7 +1,7 @@
 import { getStore } from "@netlify/blobs";
 
 const STORE_NAME = "pascoa-rifa";
-const KEY_NAME = "reservados_v4";
+const KEY_NAME = "reservados_v5";
 const TOTAL_NUMBERS = 200;
 
 function normalizeNumbers(values) {
